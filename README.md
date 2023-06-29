@@ -7,6 +7,10 @@ or Instagram link in your message. If you do, it will replace the link as you se
 an embeddable version of the link. This allows you to watch TikTok and Instagram videos directly in
 Discord without having to click on the link and open it in a browser.
 
+
+https://github.com/quickvids/replugged-plugin/assets/58155937/29a8e8bb-edbf-4fe4-a66d-8c0daff0ba91
+
+
 ## What is QuickVids?
 
 For more information about QuickVids, please visit the [QuickVids website](https://quickvids.app/).
