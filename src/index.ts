@@ -1,26 +1,108 @@
-import { Injector, Logger, webpack } from "replugged";
+import { Injector, Logger, common } from "replugged";
 
 const inject = new Injector();
 const logger = Logger.plugin("PluginTemplate");
+const { toast } = common;
 
-export async function start(): Promise<void> {
-  const typingMod = await webpack.waitForModule<{
-    startTyping: (channelId: string) => void;
-  }>(webpack.filters.byProps("startTyping"));
-  const getChannelMod = await webpack.waitForModule<{
-    getChannel: (id: string) => {
-      name: string;
-    };
-  }>(webpack.filters.byProps("getChannel"));
-
-  if (typingMod && getChannelMod) {
-    inject.instead(typingMod, "startTyping", ([channel]) => {
-      const channelObj = getChannelMod.getChannel(channel);
-      logger.log(`Typing prevented! Channel: #${channelObj?.name ?? "unknown"} (${channel}).`);
-    });
+async function fetchQuickVidsLink(content: string) {
+  const response = await fetch(
+    "https://abstract.land/api/proxy/api.quickvids.win/v1/shorturl/create",
+    // This proxy is allowed by QuickVids, so we can use it to bypass CORS.
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ input_text: content }),
+    },
+  );
+  const data = await response.json();
+  if (data.quickvids_url) {
+    return data.quickvids_url;
   }
+  toast.toast(
+    "Failed to convert a TikTok/Instagram link(s) to QuickVids link(s).",
+    toast.Kind.FAILURE,
+    { duration: 2000, position: toast.Position.BOTTOM },
+  );
+  return content;
 }
 
-export function stop(): void {
+const patterns = [
+  /(http:|https:\/\/)?(www\.)?tiktok\.com\/(@.{1,24}|@[a-zA-Z0-9-_]{50,80})\/video\/(\d{1,30})(\?.*)?/,
+  /(http:|https:\/\/)?(www\.)?tiktok.com\/t\/(\w{5,15})(\?.*)?/,
+  /(http:|https:\/\/)?((?!ww)\w{2})\.tiktok.com\/(\w{5,15})(\?.*)?/,
+  /(http:|https:\/\/)?(m\.|www\.)?tiktok\.com\/v\/(\d{1,30})(\?.*)?/,
+  /(http:|https:\/\/)?(www)?\.tiktok\.com\/(.*)item_id=(\d{1,30})(\?.*)?/,
+  /(http:|https:\/\/)?(www\.)?instagram\.com\/reel\/([a-zA-Z0-9-_]{5,15})(\/)?(\?.*)?/,
+];
+
+async function checkForLinks(content: string): Promise<string[]> {
+  const matchedLinks: string[] = [];
+
+  for (const pattern of patterns) {
+    const regex = new RegExp(pattern, "g");
+    const matches = content.match(regex);
+    if (matches) {
+      matchedLinks.push(...matches);
+    }
+  }
+
+  return matchedLinks;
+}
+
+async function replaceLinks(content: string) {
+  const links = await checkForLinks(content);
+  const originalContent = content;
+  if (links.length > 0) {
+    toast.toast(
+      "Found TikTok/Instagram link(s)! Please wait while we convert them to QuickVids links.",
+      toast.Kind.MESSAGE,
+      { duration: 2500, position: toast.Position.BOTTOM },
+    );
+  }
+  for (const link of links) {
+    try {
+      const quickvidsLink = await fetchQuickVidsLink(link);
+      content = content.replace(link, quickvidsLink);
+    } catch (error) {
+      logger.error(error);
+      toast.toast(
+        "Failed to convert a TikTok/Instagram link(s) to QuickVids link(s).",
+        toast.Kind.FAILURE,
+        { duration: 2000, position: toast.Position.BOTTOM },
+      );
+    }
+  }
+  if (content !== originalContent) {
+    toast.toast(
+      "Successfully converted TikTok/Instagram link(s) to QuickVids link(s).",
+      toast.Kind.SUCCESS,
+      { duration: 2000, position: toast.Position.BOTTOM },
+    );
+  }
+  return content;
+}
+
+export async function start() {
+  inject.instead(common.messages, "sendMessage", async (args, fn) => {
+    let content = args[1].content;
+    try {
+      content = await replaceLinks(content);
+      args[1].content = content;
+    } catch (error) {
+      logger.error(error);
+      toast.toast(
+        "Critical error while converting TikTok/Instagram link(s) to QuickVids link(s).",
+        toast.Kind.FAILURE,
+        { duration: 2000, position: toast.Position.BOTTOM },
+      );
+    }
+
+    // NOTE: With all of the try/catch blocks, this plugin should never block a message from being sent.
+
+    return fn(...args);
+  });
+}
+
+export function stop() {
   inject.uninjectAll();
 }

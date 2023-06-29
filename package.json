@@ -1,7 +1,7 @@
 {
-  "name": "plugin-template",
+  "name": "quickvids-embeder",
   "version": "1.0.0",
-  "description": "A plugin template",
+  "description": "A plugin that converts TikTok and Instagram Reel links to QuickVids embadable links",
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"

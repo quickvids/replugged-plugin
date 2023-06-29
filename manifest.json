@@ -1,16 +1,16 @@
 {
-  "id": "dev.replugged.PluginTemplate",
-  "name": "Plugin Template",
-  "description": "A plugin template",
+  "id": "quickvids.win",
+  "name": "QuickVids Embeds",
+  "description": "A plugin that converts TikTok and Instagram Reel links to QuickVids embadable links",
   "author": {
-    "name": "replugged",
-    "discordID": "1000992611840049192",
-    "github": "replugged-org"
+    "name": "wolfhound905",
+    "discordID": "324352543612469258",
+    "github": "quickvids"
   },
   "version": "1.0.0",
   "updater": {
     "type": "github",
-    "id": "replugged-org/plugin-template"
+    "id": "quickvids/replugged-plugin"
   },
   "license": "MIT",
   "type": "replugged-plugin",
