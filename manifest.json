@@ -1,5 +1,5 @@
 {
-  "id": "dev.quickvids.Embeds",
+  "id": "win.quickvids.Embeds",
   "name": "QuickVids Embeds",
   "description": "A plugin that converts TikTok and Instagram Reel links to QuickVids embadable links",
   "author": {
@@ -10,9 +10,11 @@
   "version": "1.0.0",
   "updater": {
     "type": "store",
-    "id": "dev.quickvids.Embeds"
+    "id": "win.quickvids.Embeds"
   },
   "license": "MIT",
   "type": "replugged-plugin",
-  "renderer": "src/index.ts"
+  "renderer": "src/index.ts",
+  "image": "https://cdn.discordapp.com/attachments/948492412060332042/1123826721045631116/replugged_ad.png",
+  "source": "https://github.com/quickvids/replugged-plugin"
 }
