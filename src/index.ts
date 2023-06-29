@@ -4,13 +4,14 @@ const inject = new Injector();
 const logger = Logger.plugin("PluginTemplate");
 const { toast } = common;
 
-async function fetchQuickVidsLink(content: string) {
+async function fetchQuickVidsLink(content: string): Promise<string> {
   const response = await fetch(
     "https://abstract.land/api/proxy/api.quickvids.win/v1/shorturl/create",
     // This proxy is allowed by QuickVids, so we can use it to bypass CORS.
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       body: JSON.stringify({ input_text: content }),
     },
   );
@@ -35,7 +36,7 @@ const patterns = [
   /(http:|https:\/\/)?(www\.)?instagram\.com\/reel\/([a-zA-Z0-9-_]{5,15})(\/)?(\?.*)?/,
 ];
 
-async function checkForLinks(content: string): Promise<string[]> {
+function checkForLinks(content: string): string[] {
   const matchedLinks: string[] = [];
 
   for (const pattern of patterns) {
@@ -49,8 +50,8 @@ async function checkForLinks(content: string): Promise<string[]> {
   return matchedLinks;
 }
 
-async function replaceLinks(content: string) {
-  const links = await checkForLinks(content);
+async function replaceLinks(content: string): Promise<string> {
+  const links = checkForLinks(content);
   const originalContent = content;
   if (links.length > 0) {
     toast.toast(
@@ -82,9 +83,9 @@ async function replaceLinks(content: string) {
   return content;
 }
 
-export async function start() {
+export function start(): void {
   inject.instead(common.messages, "sendMessage", async (args, fn) => {
-    let content = args[1].content;
+    let { content } = args[1];
     try {
       content = await replaceLinks(content);
       args[1].content = content;
@@ -103,6 +104,6 @@ export async function start() {
   });
 }
 
-export function stop() {
+export function stop(): void {
   inject.uninjectAll();
 }
