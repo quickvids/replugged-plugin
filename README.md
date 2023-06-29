@@ -8,7 +8,7 @@ an embeddable version of the link. This allows you to watch TikTok and Instagram
 Discord without having to click on the link and open it in a browser.
 
 
-![example](https://github.com/quickvids/replugged-plugin/assets/58155937/29a8e8bb-edbf-4fe4-a66d-8c0daff0ba91)
+https://github.com/quickvids/replugged-plugin/assets/58155937/29a8e8bb-edbf-4fe4-a66d-8c0daff0ba91
 
 
 ## What is QuickVids?
