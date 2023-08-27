@@ -1,6 +1,6 @@
 {
   "name": "quickvids-embeder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin that converts TikTok links to QuickVids embeddable links",
   "engines": {
     "node": ">=18.0.0",

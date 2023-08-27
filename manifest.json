@@ -7,7 +7,7 @@
     "discordID": "324352543612469258",
     "github": "quickvids"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "updater": {
     "type": "store",
     "id": "win.quickvids.Embeds"
