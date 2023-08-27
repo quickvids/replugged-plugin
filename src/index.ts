@@ -6,8 +6,7 @@ const { toast } = common;
 
 async function fetchQuickVidsLink(content: string): Promise<string> {
   const response = await fetch(
-    "https://abstract.land/api/proxy/api.quickvids.win/v1/shorturl/create",
-    // This proxy is allowed by QuickVids, so we can use it to bypass CORS.
+    "https://api.quickvids.win/v1/shorturl/create",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
