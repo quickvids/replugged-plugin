@@ -5,24 +5,20 @@ const logger = Logger.plugin("PluginTemplate");
 const { toast } = common;
 
 async function fetchQuickVidsLink(content: string): Promise<string> {
-  const response = await fetch(
-    "https://api.quickvids.win/v1/shorturl/create",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      body: JSON.stringify({ input_text: content }),
-    },
-  );
+  const response = await fetch("https://api.quickvids.win/v1/shorturl/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    body: JSON.stringify({ input_text: content }),
+  });
   const data = await response.json();
   if (data.quickvids_url) {
     return data.quickvids_url;
   }
-  toast.toast(
-    "Failed to convert a TikTok link(s) to QuickVids link(s).",
-    toast.Kind.FAILURE,
-    { duration: 2000, position: toast.Position.BOTTOM },
-  );
+  toast.toast("Failed to convert a TikTok link(s) to QuickVids link(s).", toast.Kind.FAILURE, {
+    duration: 2000,
+    position: toast.Position.BOTTOM,
+  });
   return content;
 }
 
@@ -65,19 +61,17 @@ async function replaceLinks(content: string): Promise<string> {
       content = content.replace(link, quickvidsLink);
     } catch (error) {
       logger.error(error);
-      toast.toast(
-        "Failed to convert a TikTok link(s) to QuickVids link(s).",
-        toast.Kind.FAILURE,
-        { duration: 2000, position: toast.Position.BOTTOM },
-      );
+      toast.toast("Failed to convert a TikTok link(s) to QuickVids link(s).", toast.Kind.FAILURE, {
+        duration: 2000,
+        position: toast.Position.BOTTOM,
+      });
     }
   }
   if (content !== originalContent) {
-    toast.toast(
-      "Successfully converted TikTok link(s) to QuickVids link(s).",
-      toast.Kind.SUCCESS,
-      { duration: 2000, position: toast.Position.BOTTOM },
-    );
+    toast.toast("Successfully converted TikTok link(s) to QuickVids link(s).", toast.Kind.SUCCESS, {
+      duration: 2000,
+      position: toast.Position.BOTTOM,
+    });
   }
   return content;
 }
