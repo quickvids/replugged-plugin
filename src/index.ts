@@ -1,12 +1,12 @@
 import { Injector, Logger, common } from "replugged";
 
 const inject = new Injector();
-const logger = Logger.plugin("PluginTemplate");
+const logger = Logger.plugin("QuickVids Embed");
 const { toast } = common;
 
 async function fetchQuickVidsLink(content: string): Promise<string> {
   const response = await fetch(
-    "https://abstract.land/api/proxy/api.quickvids.win/v1/shorturl/create",
+    "https://api.quickvids.win/v1/shorturl/create",
     // This proxy is allowed by QuickVids, so we can use it to bypass CORS.
     {
       method: "POST",
