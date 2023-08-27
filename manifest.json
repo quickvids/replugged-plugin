@@ -1,7 +1,7 @@
 {
   "id": "win.quickvids.Embeds",
   "name": "QuickVids Embeds",
-  "description": "A plugin that converts TikTok and Instagram Reel links to QuickVids embadable links",
+  "description": "A plugin that converts TikTok links to QuickVids embeddable links",
   "author": {
     "name": "wolfhound905",
     "discordID": "324352543612469258",

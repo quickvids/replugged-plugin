@@ -19,7 +19,7 @@ async function fetchQuickVidsLink(content: string): Promise<string> {
     return data.quickvids_url;
   }
   toast.toast(
-    "Failed to convert a TikTok/Instagram link(s) to QuickVids link(s).",
+    "Failed to convert a TikTok link(s) to QuickVids link(s).",
     toast.Kind.FAILURE,
     { duration: 2000, position: toast.Position.BOTTOM },
   );
@@ -32,7 +32,7 @@ const patterns = [
   /(http:|https:\/\/)?((?!ww)\w{2})\.tiktok.com\/(\w{5,15})(\?.*)?/,
   /(http:|https:\/\/)?(m\.|www\.)?tiktok\.com\/v\/(\d{1,30})(\?.*)?/,
   /(http:|https:\/\/)?(www)?\.tiktok\.com\/(.*)item_id=(\d{1,30})(\?.*)?/,
-  /(http:|https:\/\/)?(www\.)?instagram\.com\/reel\/([a-zA-Z0-9-_]{5,15})(\/)?(\?.*)?/,
+  // /(http:|https:\/\/)?(www\.)?instagram\.com\/reel\/([a-zA-Z0-9-_]{5,15})(\/)?(\?.*)?/,
 ];
 
 function checkForLinks(content: string): string[] {
@@ -54,7 +54,7 @@ async function replaceLinks(content: string): Promise<string> {
   const originalContent = content;
   if (links.length > 0) {
     toast.toast(
-      "Found TikTok/Instagram link(s)! Please wait while we convert them to QuickVids links.",
+      "Found TikTok link(s)! Please wait while we convert them to QuickVids links.",
       toast.Kind.MESSAGE,
       { duration: 2500, position: toast.Position.BOTTOM },
     );
@@ -66,7 +66,7 @@ async function replaceLinks(content: string): Promise<string> {
     } catch (error) {
       logger.error(error);
       toast.toast(
-        "Failed to convert a TikTok/Instagram link(s) to QuickVids link(s).",
+        "Failed to convert a TikTok link(s) to QuickVids link(s).",
         toast.Kind.FAILURE,
         { duration: 2000, position: toast.Position.BOTTOM },
       );
@@ -74,7 +74,7 @@ async function replaceLinks(content: string): Promise<string> {
   }
   if (content !== originalContent) {
     toast.toast(
-      "Successfully converted TikTok/Instagram link(s) to QuickVids link(s).",
+      "Successfully converted TikTok link(s) to QuickVids link(s).",
       toast.Kind.SUCCESS,
       { duration: 2000, position: toast.Position.BOTTOM },
     );
@@ -91,7 +91,7 @@ export function start(): void {
     } catch (error) {
       logger.error(error);
       toast.toast(
-        "Critical error while converting TikTok/Instagram link(s) to QuickVids link(s).",
+        "Critical error while converting TikTok link(s) to QuickVids link(s).",
         toast.Kind.FAILURE,
         { duration: 2000, position: toast.Position.BOTTOM },
       );
