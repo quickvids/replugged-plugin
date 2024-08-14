@@ -1,3 +1,8 @@
+Hello, I no longer recommend the use of this plugin due to Discord adding User Apps. Please add the the bot to your account for use of the /tiktok command here: [User Invite](https://api.quickvids.app/v2/discord/login?invite=true&user_install=true)
+
+
+
+
 # QuickVids Embeds Plugin
 
 ## What is this plugin?
